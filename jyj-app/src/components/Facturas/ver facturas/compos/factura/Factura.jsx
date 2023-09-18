@@ -1,14 +1,32 @@
-import { Paper, Typography } from "@mui/material";
+import { Box, Chip, Paper, Typography } from "@mui/material";
 
 
 export default function Factura(props) {
     const { invoice } = props
-    console.log(invoice);
+    invoice.status = "PAID"
     return (
-        <Paper>
-            <Typography>
-                {invoice.id} - {invoice.Client?.name} - {invoice.Rents[0]?.startDate}
-            </Typography>
+        <Paper
+        display="flex"
+        elevation={3}
+        sx={{ padding: 2 }}>
+            <Box sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+            }}>
+                <Typography>
+                    {invoice.id}
+                </Typography>
+                <Typography>
+                    {invoice.Client?.name}
+                </Typography>
+                <Typography>
+                    {invoice.Rents[0]?.startDate}
+                </Typography>
+                <span>
+                    {invoice.state === "PENDING" ? <Chip label="Pendiente" color="warning" size="small" /> : <Chip label="Pagado" color="success" size="small" />}
+                </span>
+            </Box>
         </Paper>
+
     )
 }
