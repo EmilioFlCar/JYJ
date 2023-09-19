@@ -1,9 +1,9 @@
 const { Client } = require('../../db')
 
 const updateClient = async function (req, res) {
+    const { id } = req.params
+    const { name, phoneNumber, email, address } = req.body
     try {
-        const { id } = req.params
-        const { name, phoneNumber, email, address } = req.body
         const updatedClient = await Client.update({ name, phoneNumber, email, address }, {
             where: { id }
         })
