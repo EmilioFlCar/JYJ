@@ -2,12 +2,11 @@ import { ADD_CLIENT, EDIT_CLIENT, DELETE_CLIENT, GET_CLIENT, GET_CLIENTS } from 
 import axios from 'axios'
 
 
-
 export function addClient(client) {
     return async function (dispatch) {
         try {
             const { id, name, phoneNumber, address, email } = client
-            const newUser = await axios.post('http://localhost:3001/jyj/clients/', {
+            const newUser = await axios.post('https://jyj-api.onrender.com/jyj/clients/', {
                 id, name, phoneNumber, address, email
             })
             if (newUser) {
@@ -25,7 +24,7 @@ export function addClient(client) {
 export function editClient(client) {
     return async function (dispatch) {
         try {
-            const updatedClients = await axios.put('http://localhost:3001/jyj/clients/' + client.id, client)
+            const updatedClients = await axios.put('https://jyj-api.onrender.com/jyj/clients/' + client.id, client)
             console.log(updatedClients);
             dispatch({
                 type: EDIT_CLIENT,
@@ -40,7 +39,7 @@ export function editClient(client) {
 export function deleteClient(id) {
     return async function (dispatch) {
         try {
-            const deleted = await axios.delete('http://localhost:3001/jyj/clients/' + id)
+            const deleted = await axios.delete('https://jyj-api.onrender.com/jyj/clients/' + id)
             if (deleted.data.deleted === 1) {
                 dispatch({
                     type: DELETE_CLIENT,
@@ -56,7 +55,7 @@ export function deleteClient(id) {
 export function getClient(id) {
     return async function (dispatch) {
         try {
-            const client = await axios.get('http://localhost:3001/jyj/clients?id=' + id)
+            const client = await axios.get('https://jyj-api.onrender.com/jyj/clients?id=' + id)
             dispatch({
                 type: GET_CLIENT,
                 payload: client.data
@@ -70,7 +69,7 @@ export function getClient(id) {
 export function getClients() {
     return async function (dispatch) {
         try {
-            const clients = await axios.get('http://localhost:3001/jyj/clients/')
+            const clients = await axios.get('https://jyj-api.onrender.com/jyj/clients/')
             dispatch({
                 type: GET_CLIENTS,
                 payload: clients.data

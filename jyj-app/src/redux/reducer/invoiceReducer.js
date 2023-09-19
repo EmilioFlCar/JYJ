@@ -1,4 +1,4 @@
-import { CREATE_INVOICE, DELETE_EQUIPMENT, GET_INVOICES, PUSH_EQUIPMENT, RESET_INVOICE, SET_INVOICE_CLIENT } from "../types/invoiceTypes";
+import { CREATE_INVOICE, DELETE_EQUIPMENT, GET_INVOICES, PUSH_EQUIPMENT, RESET_INVOICE, SET_INVOICE_CLIENT, UPDATE_INVOICE } from "../types/invoiceTypes";
 
 const initialState = {
     client: {},
@@ -44,6 +44,11 @@ const invoiceReducer = (state = initialState, action) => {
                 client: {},
                 clientID: null,
                 equipmentData: [],
+            }
+        case UPDATE_INVOICE:
+            return{
+                ...state,
+                invoices: payload.data
             }
 
         default:

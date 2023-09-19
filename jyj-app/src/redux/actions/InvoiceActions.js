@@ -1,11 +1,11 @@
 import axios from "axios";
-import { CREATE_INVOICE, DELETE_EQUIPMENT, GET_INVOICES, PUSH_EQUIPMENT, RESET_INVOICE, SET_INVOICE_CLIENT } from "../types/invoiceTypes";
+import { CREATE_INVOICE, DELETE_EQUIPMENT, GET_INVOICES, PUSH_EQUIPMENT, RESET_INVOICE, SET_INVOICE_CLIENT, UPDATE_INVOICE } from "../types/invoiceTypes";
 
 export function getInvoices(){
 
     return async function (dispatch){
         try {
-            const invoices = await axios.get('http://localhost:3001/jyj/invoice')
+            const invoices = await axios.get('https://jyj-api.onrender.com/jyj/invoice')
             dispatch({
                 type: GET_INVOICES,
                 payload: invoices.data
@@ -22,7 +22,7 @@ export function getInvoices(){
 export function createInvoice(data) {
     return async function (dispatch) {
         try {
-            const invoices = await axios.post('http://localhost:3001/jyj/invoice', data)
+            const invoices = await axios.post('https://jyj-api.onrender.com/jyj/invoice', data)
             dispatch({
                 type: CREATE_INVOICE,
                 payload: invoices.data
@@ -58,5 +58,19 @@ export function deleteEquipment(equipment) {
 export function resetInvoice() {
     return {
         type: RESET_INVOICE,
+    }
+}
+
+export function updateInvoice(id, state){
+    return async function(dispatch){
+        try {
+            const update = await axios.put('https://jyj-api.onrender.com/jyj/invoice/update', {id, state})
+            dispatch({
+                type: UPDATE_INVOICE,
+                payload: update
+            })     
+        } catch (error) {
+            alert(error)
+        }
     }
 }

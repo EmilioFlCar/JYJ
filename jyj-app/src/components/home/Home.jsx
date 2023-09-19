@@ -5,7 +5,7 @@ export default function Home(){
     return (
         <Container sx={{mt:10}}>
             <Typography variant="h1">
-                Home component
+                On development...
             </Typography>
         </Container>
     )

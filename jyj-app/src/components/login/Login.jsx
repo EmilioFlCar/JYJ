@@ -3,7 +3,7 @@
 export default function Login(){
     return(
         <div>
-           <h1>LOGIN COMPONENT</h1> 
+           <h1>ON DEVELOPMENT...</h1> 
         </div>
     )
 }

@@ -4,7 +4,7 @@ import axios from 'axios'
 export function getItems(){
     return async function (dispatch){
         try {
-            const items = await axios.get('http://localhost:3001/jyj/equipment')
+            const items = await axios.get('https://jyj-api.onrender.com/jyj/equipment')
             dispatch({
                 type: GET_ITEMS,
                 payload: items.data
@@ -21,7 +21,7 @@ export function addItem(item) {
     return async function (dispatch) {
         try {
             const { name, amount, price } = item
-            const newItem = await axios.post('http://localhost:3001/jyj/equipment/',
+            const newItem = await axios.post('https://jyj-api.onrender.com/jyj/equipment/',
             {name, amount, price})
             dispatch({
                 type: ADD_ITEM,
@@ -36,7 +36,7 @@ export function addItem(item) {
 export function editItem(item) {
     return async function(dispatch){
         try {
-            const items = await axios.put('http://localhost:3001/jyj/equipment/'+item.id, item)
+            const items = await axios.put('https://jyj-api.onrender.com/jyj/equipment/'+item.id, item)
             dispatch ({
                 type: EDIT_ITEM,
                 payload: items.data.equipment
@@ -51,7 +51,7 @@ export function editItem(item) {
 export function deleteItem(id) {
     return async function (dispatch){
         try {
-            const deleted = await axios.delete('http://localhost:3001/jyj/equipment/'+id)
+            const deleted = await axios.delete('https://jyj-api.onrender.com/jyj/equipment/'+id)
             dispatch({
                 type: DELETE_ITEM,
                 payload: deleted.data.equipment
