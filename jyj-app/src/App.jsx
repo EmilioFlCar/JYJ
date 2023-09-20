@@ -15,10 +15,10 @@ function App() {
 
   return (
     <>
-    {location.pathname !== '/' && <Barra/>}
+    {location.pathname !== '/login' && <Barra/>}
      <Routes>
-        <Route path="/" element={<Login/>}> </Route>
-        <Route path='home' element={<Home/>}> </Route>
+        <Route path='/' element={<Home/>}> </Route>
+        <Route path="/login" element={<Login/>}> </Route>
         <Route path="inventario" element={<Inventario/>}></Route> 
         <Route path= "clientes" element={<Registro/>}></Route>
         <Route path="facturacion" element={<Facturacion/>}></Route>
