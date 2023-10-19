@@ -32,7 +32,7 @@ function Facturacion() {
             equipmentData: [...facturaData.equipmentData, data]
         })
     }
-    
+
     function handleSelectClientChange(e, newValue) {
         const parts = newValue.split(" - ")
         const id = parts[0]

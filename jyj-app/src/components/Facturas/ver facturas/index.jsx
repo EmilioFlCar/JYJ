@@ -8,13 +8,12 @@ import DetalleView from "./compos/detalles/detalleView";
 
 export default function VerFacturas() {
     const dispatch = useDispatch()
-    const { invoices } = useSelector((state) => state.invoice)
-    const [invoice, setInvoice] = useState(null)
-
     useEffect(() => {
         dispatch(getInvoices())
     }, [])
 
+    const { invoices } = useSelector((state) => state.invoice)
+    const [invoice, setInvoice] = useState(null)
     return (
         <Grid
             container
@@ -25,14 +24,10 @@ export default function VerFacturas() {
             alignItems="stretch"
         >
             <Grid item xs={5}>
-                {invoices.map((invoice, index) => (
-                        <Factura key={index} invoice={invoice} setInvoice={setInvoice}/>
-                ))}
-
+                {invoices != [] ? (<Factura invoices={invoices} setInvoice={setInvoice} />) : (<h1>No hay facturas para mostrar</h1>)}
             </Grid>
             <Grid item xs={5}>
-
-            {invoice != null? <DetalleView invoice={invoice}/>:<span>Detalles de la factura</span>}
+                {invoice != null ? <DetalleView invoice={invoice} /> : <span>Detalles de la factura</span>}
             </Grid>
 
         </Grid>

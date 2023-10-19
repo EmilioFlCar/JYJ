@@ -3,6 +3,10 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import DeleteIcon from '@mui/icons-material/Delete';
 import { createInvoice, deleteEquipment } from "../../../../redux/actions/InvoiceActions";
+import generarFactura from "../../../../functions/generatePDF";
+import generatePDF from "../../../../functions/generatePDF";
+import calcularDias from "../../../../functions/calcularDias";
+import SaveIcon from '@mui/icons-material/Save';
 
 export default function InvoiceDetails() {
     const invoice = useSelector(state => state.invoice)
@@ -10,14 +14,7 @@ export default function InvoiceDetails() {
 
     useEffect(() => {
     }, [invoice])
-    
-    function calcularDias(start, end) {
-        const fecha1 = new Date(start);
-        const fecha2 = new Date(end);
-        const diferenciaEnMilisegundos = fecha2 - fecha1;
-        const diferenciaEnDias = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24);
-        return diferenciaEnDias
-    }
+
     function total(items) {
         let result = 0
         items.map((item) => {
@@ -30,7 +27,7 @@ export default function InvoiceDetails() {
         updatedEquipmentData.splice(index, 1)
         dispatch(deleteEquipment(updatedEquipmentData));
     };
-    const handleSubmit = ()=>{
+    const handleSubmit = () => {
         dispatch(createInvoice(invoice))
     }
 
@@ -98,7 +95,16 @@ export default function InvoiceDetails() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Button onClick={handleSubmit} > CREAR </Button>
+                <Button
+                    size="big"
+                    color="info"
+                    variant="contained"
+                    endIcon={<SaveIcon />}
+                    onClick={handleSubmit}
+                >
+                    Crear factura
+                </Button>
+            {/* <Button onClick={() => generatePDF(invoice)} > IMPRIMIR </Button> */}
         </Paper>
     )
 }

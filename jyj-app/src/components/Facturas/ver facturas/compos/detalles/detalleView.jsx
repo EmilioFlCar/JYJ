@@ -3,6 +3,9 @@ import { Button, Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Pape
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { updateInvoice } from "../../../../../redux/actions/InvoiceActions";
+import generatePDF from "../../../../../functions/generatePDF";
+import SaveIcon from '@mui/icons-material/Save';
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
 export default function DetalleView(props) {
     const { invoice } = props
@@ -12,20 +15,19 @@ export default function DetalleView(props) {
     useEffect(() => {
     }, [invoice])
 
-    const handleChange = (e)=>{
-        const {value} = e.target
+    const handleChange = (e) => {
+        const { value } = e.target
         setState(value)
     }
 
-    const handleSubmit = ()=>{
+    const handleSubmit = () => {
         dispatch(updateInvoice(invoice.id, state))
-        setState()
+        setState(null)
     }
-    
     return (
         <Paper>
             <Typography variant="h5" gutterBottom sx={{ padding: 2, display: 'flex', justifyContent: 'center' }} >FACTURA</Typography >
-            <Grid container spacing={1.5}  sx={{paddingLeft: 4}}>
+            <Grid container spacing={1.5} sx={{ paddingLeft: 4 }}>
                 <Grid item xs={7}>
                     <Typography variant="subtitle1">
                         ID del Cliente: {invoice.Client?.id}
@@ -89,7 +91,30 @@ export default function DetalleView(props) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Button onClick={handleSubmit} sx={{ display: 'flex', justifyContent: 'center' }}> ACTUALIZAR FACTURA </Button>
+            <Grid container spacing={1} justifyContent="center" flexDirection= "column" alignItems="center" marginTop='10px'>
+                <Grid item>
+                    <Button
+                        size="big"
+                        color="info"
+                        variant="contained"
+                        endIcon={<SaveIcon />}
+                        onClick={handleSubmit}
+                    >
+                        Actualizar factura
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Button
+                        size="big"
+                        color="success"
+                        variant="contained"
+                        endIcon={<LocalPrintshopIcon />}
+                        onClick={() => generatePDF(invoice)}
+                    >
+                        Imprimir
+                    </Button>
+                </Grid>
+            </Grid>
         </Paper>
     )
 }

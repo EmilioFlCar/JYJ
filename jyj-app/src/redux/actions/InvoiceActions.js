@@ -1,5 +1,6 @@
 import axios from "axios";
 import { CREATE_INVOICE, DELETE_EQUIPMENT, GET_INVOICES, PUSH_EQUIPMENT, RESET_INVOICE, SET_INVOICE_CLIENT, UPDATE_INVOICE } from "../types/invoiceTypes";
+import generatePDF from "../../functions/generatePDF";
 
 export function getInvoices(){
 
@@ -22,14 +23,15 @@ export function getInvoices(){
 export function createInvoice(data) {
     return async function (dispatch) {
         try {
-            const invoices = await axios.post('https://jyj-api.onrender.com/jyj/invoice', data)
+            const response = await axios.post('https://jyj-api.onrender.com/jyj/invoice', data)
             dispatch({
                 type: CREATE_INVOICE,
-                payload: invoices.data
+                payload: response.data.allInvoices
             })
-            resetInvoice
+            alert("¡Factura creada con éxito!")
+            dispatch(resetInvoice());
         } catch (error) {
-            alert(error)
+            alert("Error al crear la factura")
         }
     }
 }
