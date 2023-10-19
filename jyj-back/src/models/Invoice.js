@@ -8,6 +8,9 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             unique: true
         },
+        creationDate:{
+            type: DataTypes.DATE
+        },
         issueDate:{
             type: DataTypes.DATE
         },

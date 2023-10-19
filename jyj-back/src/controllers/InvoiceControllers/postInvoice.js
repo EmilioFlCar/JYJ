@@ -11,6 +11,7 @@ const postInvoice = async function (req, res) {
     if (!client) {
       throw new Error('El cliente con la identificación especificada no existe.');
     } else {
+      let factura = null
 
       const facturas = await conn.transaction(async (t) => {
         let totalInvoice = 0;
@@ -30,18 +31,19 @@ const postInvoice = async function (req, res) {
           totalInvoice += cost;
 
           const rent = await Rent.create(
-            { startDate, 
-              endDate, 
-              cost, 
+            {
+              startDate,
+              endDate,
+              cost,
               rentedQuantity: itemsToRent,
               days: calculateDays(startDate, endDate)
             },
             { transaction: t });
 
-          if(!rent){
+          if (!rent) {
             throw new Error(`Ocurrió un problema al generar el alquiler de ${equipment.name}.`);
           }
-            
+
           await equipment.decrement('amount', { by: itemsToRent, transaction: t });
 
           await rent.setEquipment(equipment, { transaction: t });
@@ -53,8 +55,10 @@ const postInvoice = async function (req, res) {
 
         await newInvoice.addRents(rents, { transaction: t });
         await newInvoice.setClient(client, { transaction: t });
+        newInvoice.creationDate = new Date()
         newInvoice.total = totalInvoice;
         await newInvoice.save({ transaction: t });
+        factura = newInvoice
 
         return await Invoice.findAll(
           {
@@ -75,7 +79,7 @@ const postInvoice = async function (req, res) {
         );
       });
 
-      res.status(200).json(facturas);
+      res.status(200).json({allInvoices: facturas, factura});
     }
 
   } catch (error) {
