@@ -8,14 +8,6 @@ module.exports = (sequelize)=>{
             primaryKey: true,
             unique: true
         },
-        startDate:{
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-        endDate:{
-            type: DataTypes.DATE,
-            allowNull: false, 
-        },
         cost:{
             type: DataTypes.FLOAT,
             allowNull: false,   

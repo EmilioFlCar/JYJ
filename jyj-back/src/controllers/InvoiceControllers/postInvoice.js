@@ -20,23 +20,21 @@ const postInvoice = async function (req, res) {
         const newInvoice = await Invoice.create({}, { transaction: t });
 
         for (const item of equipmentData) {
-          const { startDate, endDate, itemID, itemsToRent } = item;
-          const equipment = await Equipment.findByPk(itemID, { transaction: t });
+          const { daysToRent, itemInfo, numberOfItemsToRent } = item;
+          const equipment = await Equipment.findByPk(itemInfo.id, { transaction: t });
 
-          if (equipment.amount < itemsToRent) {
+          if (equipment.amount < numberOfItemsToRent) {
             throw new Error(`No hay suficientes unidades (${equipment.amount}) de ${equipment.name} para generar el alquiler.`)
           }
 
-          const cost = calculateCost(startDate, endDate, equipment.price, itemsToRent);
+          const cost = calculateCost(daysToRent, equipment.price, numberOfItemsToRent);
           totalInvoice += cost;
 
           const rent = await Rent.create(
             {
-              startDate,
-              endDate,
               cost,
-              rentedQuantity: itemsToRent,
-              days: calculateDays(startDate, endDate)
+              rentedQuantity: numberOfItemsToRent,
+              days: daysToRent
             },
             { transaction: t });
 
@@ -44,7 +42,7 @@ const postInvoice = async function (req, res) {
             throw new Error(`Ocurrió un problema al generar el alquiler de ${equipment.name}.`);
           }
 
-          await equipment.decrement('amount', { by: itemsToRent, transaction: t });
+          await equipment.decrement('amount', { by: numberOfItemsToRent, transaction: t });
 
           await rent.setEquipment(equipment, { transaction: t });
           await rent.setClient(client, { transaction: t });
@@ -79,10 +77,11 @@ const postInvoice = async function (req, res) {
         );
       });
 
-      res.status(200).json({allInvoices: facturas, factura});
+      res.status(200).json({ allInvoices: facturas, factura });
     }
 
   } catch (error) {
+    console.log(error)
     res.status(500).json(error.message);
   }
 };
