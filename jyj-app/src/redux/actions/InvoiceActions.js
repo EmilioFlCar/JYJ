@@ -1,12 +1,13 @@
 import axios from "axios";
 import { CREATE_INVOICE, DELETE_EQUIPMENT, GET_INVOICES, PUSH_EQUIPMENT, RESET_INVOICE, SET_INVOICE_CLIENT, UPDATE_INVOICE } from "../types/invoiceTypes";
 import generatePDF from "../../functions/generatePDF";
+const API_URL = import.meta.env.VITE_API_URL
 
-export function getInvoices(){
+export function getInvoices() {
 
-    return async function (dispatch){
+    return async function (dispatch) {
         try {
-            const invoices = await axios.get('https://jyj-api.onrender.com/jyj/invoice')
+            const invoices = await axios.get(`${API_URL}/invoice`)
             dispatch({
                 type: GET_INVOICES,
                 payload: invoices.data
@@ -23,7 +24,7 @@ export function getInvoices(){
 export function createInvoice(data) {
     return async function (dispatch) {
         try {
-            const response = await axios.post('https://jyj-api.onrender.com/jyj/invoice', data)
+            const response = await axios.post(`${API_URL}/invoice`, data)
             dispatch({
                 type: CREATE_INVOICE,
                 payload: response.data.allInvoices
@@ -63,14 +64,14 @@ export function resetInvoice() {
     }
 }
 
-export function updateInvoice(id, state){
-    return async function(dispatch){
+export function updateInvoice(id, state) {
+    return async function (dispatch) {
         try {
-            const update = await axios.put('https://jyj-api.onrender.com/jyj/invoice/update', {id, state})
+            const update = await axios.put(`${API_URL}/invoice/update`, { id, state })
             dispatch({
                 type: UPDATE_INVOICE,
                 payload: update
-            })     
+            })
         } catch (error) {
             alert(error)
         }

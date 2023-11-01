@@ -36,7 +36,7 @@ function Facturacion() {
     function handleSelectClientChange(e, newValue) {
         const parts = newValue.split(" - ")
         const id = parts[0]
-        const selectedClient = clients.find((client) => client.id === parseInt(id, 10));
+        const selectedClient = clients.find((client) => parseInt(client.id, 10) === parseInt(id, 10));
         dispatch(setInvoiceClient(selectedClient))
     }
     return (

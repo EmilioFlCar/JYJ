@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Grid, IconButton, Paper, TextField, Typography } from "@mui/material"
+import { Box, Grid, IconButton, Paper, TextField, Typography, Button } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import { useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
@@ -14,10 +14,8 @@ export default function EquipoCard(props) {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const [date, setDate] = useState({
-        itemID: "",
-        itemsToRent: "",
-        startDate: "",
-        endDate: "",
+        numberOfItemsToRent: "",
+        daysToRent: "",
         itemInfo: item
     })
 
@@ -33,20 +31,19 @@ export default function EquipoCard(props) {
     }
 
     const saveData = () => {
-        const { itemID, itemsToRent, startDate, endDate } = date
-        if (itemID == "" || itemsToRent == "" || startDate == "" || endDate == "") {
-            return alert('Faltan datos sobre el producto por ingresar')
+        const { numberOfItemsToRent, daysToRent } = date;
+        if (numberOfItemsToRent === "" || daysToRent === "") {
+            return alert('Faltan datos sobre el producto por ingresar');
         } else {
-            dispatch(pushEquipment(date))
+            dispatch(pushEquipment({ ...date }));
             setDate({
-                itemID: "",
-                itemsToRent: "",
-                startDate: "",
-                endDate: ""
-            })
-             setIsModalOpen(false)
+                numberOfItemsToRent: "",
+                daysToRent: "",
+                itemInfo: item
+            });
         }
-    }
+    };
+
     return (
         <div>
             {item ? (<Paper display="flex"
@@ -55,12 +52,11 @@ export default function EquipoCard(props) {
                     padding: 1,
                     margin: 1.5,
                 }}>
-                <Box
-                    sx={{
+                <Box>
+                    <Grid container spacing={1} columns={16} sx={{
                         display: 'flex',
-                        justifyContent: 'space-between',
+                        alignItems: 'center',
                     }}>
-                    <Grid container spacing={1} columns={16}>
                         <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <Typography variant="h6" component="h2">{item.name}</Typography>
                         </Grid>
@@ -84,23 +80,35 @@ export default function EquipoCard(props) {
                             <TextField
                                 size="small"
                                 type="number"
-                                name="itemsToRent"
+                                name="numberOfItemsToRent"
+                                value={date.numberOfItemsToRent}
                                 sx={{ maxWidth: 70 }}
                                 onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={2}>
-                            <IconButton
-                                color="primary"
-                                aria-label="add to shopping cart"
-                                onClick={() => { setIsModalOpen(true), setDate({ ...date, itemID: item.id }) }}
-                            >
-                                <AddShoppingCartIcon />
-                            </IconButton>
+                            <TextField
+                                size="small"
+                                type="number"
+                                name="daysToRent"
+                                sx={{ maxWidth: 70 }}
+                                value={date.daysToRent}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Button>
+                                <IconButton
+                                    color="primary"
+                                    aria-label="add to shopping cart"
+                                    onClick={() => saveData()}
+                                >
+                                    <AddShoppingCartIcon />
+                                </IconButton>
+                            </Button>
                         </Grid>
                     </Grid>
                 </Box>
-                <DatePicker isModalOpen={isModalOpen} handleClose={() => setIsModalOpen(false)} handleChange={handleChange} date={date} saveData={saveData} />
             </Paper>) : (
                 <p>Loading...</p>
             )}

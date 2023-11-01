@@ -18,7 +18,7 @@ export default function InvoiceDetails() {
     function total(items) {
         let result = 0
         items.map((item) => {
-            result = result + (item.itemInfo.price * parseInt(item.itemsToRent)) * calcularDias(item.startDate, item.endDate)
+            result = result + (item.itemInfo.price * parseInt(item.numberOfItemsToRent)) * parseInt(item.daysToRent)
         })
         return result
     }
@@ -74,9 +74,9 @@ export default function InvoiceDetails() {
                                 <TableCell>{item.itemInfo.id}</TableCell>
                                 <TableCell align="right">{item.itemInfo.name}</TableCell>
                                 <TableCell align="right">{item.itemInfo.price}</TableCell>
-                                <TableCell align="right">{item.itemsToRent}</TableCell>
-                                <TableCell align="right">{calcularDias(item.startDate, item.endDate)}</TableCell>
-                                <TableCell align="right">{(item.itemInfo.price * parseInt(item.itemsToRent)) * calcularDias(item.startDate, item.endDate)}</TableCell>
+                                <TableCell align="right">{item.numberOfItemsToRent}</TableCell>
+                                <TableCell align="right">{item.daysToRent}</TableCell>
+                                <TableCell align="right">{(item.itemInfo.price * parseInt(item.numberOfItemsToRent)) * parseInt(item.daysToRent)}</TableCell>
                                 <TableCell>
                                     <IconButton color="error">
                                         <DeleteIcon onClick={() => handleDelete(index)} />
@@ -84,10 +84,6 @@ export default function InvoiceDetails() {
                                 </TableCell>
                             </TableRow>
                         ))}
-                        {/* <TableRow>
-                            <TableCell align="right" colSpan={5}>Subtotal</TableCell>
-                            <TableCell align="right">{123}</TableCell>
-                        </TableRow> */}
                         <TableRow>
                             <TableCell align="right" colSpan={5}>Total</TableCell>
                             <TableCell align="right">{total(invoice.equipmentData)}</TableCell>
